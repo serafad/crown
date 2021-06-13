@@ -13,6 +13,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+  String _checkmate(String fen){
+final chess = ch.Chess.fromFEN(fen);
+    if(chess.in_check){
+              return ('benet');
+            }
+            else{
+              return ('annu');
+            }
+
+}
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +39,31 @@ class _HomePageState extends State<HomePage> {
           size: size,
           orientation: cb.Color.WHITE,
           onMove: (move) {
+            ch.Chess game = ch.Chess();
+           // game.move(move);
+            
             //print(ch.Chess().in_check);
-            print(_fen);
+           // final chm = ch.Chess().make_move();
             final nextFen = makeMove(_fen, {
               'from': move.from,
               'to': move.to,
               'promotion': 'q',
             });
 
+              
+           
+
             if (nextFen != null) {
               setState(() {
                 _fen = nextFen;
               });
+              
+              final _ckeck = _checkmate(_fen);
+              if(_ckeck == 'benet'){
+                print('object');
+              }else{
+                print('jillu');
+              }
 
               Future.delayed(Duration(milliseconds: 300000)).then((_) {
                 final nextMove = getRandomMove(_fen);
@@ -54,6 +77,7 @@ class _HomePageState extends State<HomePage> {
               });
             }
           },
+         // onClick:(){}
         ),
       ),
     );
